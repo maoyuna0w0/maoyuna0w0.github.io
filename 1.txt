@@ -1,3 +1,4 @@
+#二改请标注来源
 version=1
 target="https://sharechain.qq.com/36e88405300762a1fcdf52f399b818c9"
 sh_name1=$(basename "$0" .sh)
