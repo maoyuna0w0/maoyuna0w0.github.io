@@ -18,10 +18,13 @@ if [ $url4 = $version ]
 then
 echo "当前为最新版本喵！"
 else
-echo "当前版本与最新版本不一致！请更新喵！"
+echo "当前版本与最新版本不一致！"
 echo "当前版本:"$version
 echo "最新版本:"$url4
 echo "更新日志:"$url6
+echo "正在更新:"
+curl -o $sh_name1".sh" https://maoyuna0w0.github.io/1.txt
+echo "更新完成喵！请重新启动脚本喵！"
 exit
 fi
 }
