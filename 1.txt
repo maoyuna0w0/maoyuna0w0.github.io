@@ -1,3 +1,4 @@
+#!/bin/bash
 #二改请标注来源
 version=0.1
 target="https://sharechain.qq.com/36e88405300762a1fcdf52f399b818c9"
