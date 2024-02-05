@@ -1,33 +1,33 @@
 #!/bin/bash
 #二改请标注来源
-version=0.1
+version=0.2
 target="https://sharechain.qq.com/36e88405300762a1fcdf52f399b818c9"
 sh_name1=$(basename "$0" .sh)
 sh_name2=$(basename "$0" sh)
 sh_name3=$(basename "$0" h)
 update(){
-url=$(curl -s $target)
-url1=${url/%"[版本尾]"*/}
-url2=$(echo ${url1/*"[版本头]"/})
-url3=${url2//'<div>'/}
-url4=${url3//'</div>'/}
-url1=${url/%"[日志尾]"*/}
-url2=$(echo ${url1/*"[日志头]"/})
-url3=${url2//'<div>'/}
-url5=${url3//'</div>'/}
-url6=${url5//"[换行]"/"\n"}
+  url=$(curl -s $target)
+  url1=${url/%"[版本尾]"*/}
+  url2=$(echo ${url1/*"[版本头]"/})
+  url3=${url2//'<div>'/}
+  url4=${url3//'</div>'/}
+  url1=${url/%"[日志尾]"*/}
+  url2=$(echo ${url1/*"[日志头]"/})
+  url3=${url2//'<div>'/}
+  url5=${url3//'</div>'/}
+  url6=${url5//"[换行]"/"\n"}
 if [ $url4 = $version ]
 then
-echo "当前为最新版本喵！"
+  echo "当前为最新版本喵！"
 else
-echo "当前版本与最新版本不一致！"
-echo "当前版本:"$version
-echo "最新版本:"$url4
-echo "更新日志:"$url6
-echo "正在更新..."
-curl -s -o $sh_name1".sh" https://maoyuna0w0.github.io/1.txt
-echo "更新完成喵！请重新启动脚本喵！"
-exit
+  echo "当前版本与最新版本不一致！"
+  echo "当前版本:"$version
+  echo "最新版本:"$url4
+  echo "更新日志:"$url6
+  echo "正在更新..."
+  curl -s -o $sh_name1".sh" https://maoyuna0w0.github.io/1.txt
+  echo "更新完成喵！请重新启动脚本喵！"
+  exit
 fi
 }
 network()
@@ -47,49 +47,49 @@ network()
     return 0
 }
 miao(){
-echo "正在获取信息...请稍等喵"
-network
+  echo "正在获取信息...请稍等喵"
+  network
 if [ $? -eq 0 ];then
 	echo "获取失败喵！请检查网络后重试喵！"
 	exit
 fi
 update
-url1=${url/%"[公告尾]"*/}
-url2=$(echo ${url1/*"[公告头]"/})
-url3=${url2//'<div>'/}
-url4=${url3//'</div>'/}
-echo ${url4//"[换行]"/"\n"}
+  url1=${url/%"[公告尾]"*/}
+  url2=$(echo ${url1/*"[公告头]"/})
+  url3=${url2//'<div>'/}
+  url4=${url3//'</div>'/}
+  echo ${url4//"[换行]"/"\n"}
 }
 miao0(){
-url1=${url/%"[开关尾]"*/}
-url2=$(echo ${url1/*"[开关头]"/})
-url3=${url2//'<div>'/}
-url4=${url3//'</div>'/}
+  url1=${url/%"[开关尾]"*/}
+  url2=$(echo ${url1/*"[开关头]"/})
+  url3=${url2//'<div>'/}
+  url4=${url3//'</div>'/}
 if [ $url4 = "关" ]
 then
-echo "本脚本暂时停止运行喵！"
-exit
+  echo "本脚本暂时停止运行喵！"
+  exit
 else
-echo "欢迎使用本脚本！"
+  echo "欢迎使用本脚本！"
 fi
 }
 miao3(){
 if [ $aa1 ] || [ $aa2 ] || [ $aa3 ]
 then
-echo "正在修改喵..."
-for file in `ls *$aa1`
-do
-    if [ $a1 = 1 ]
-    then
-    mv $file ${file%$aa1}$aa2
-    elif [ $a1 = 2 ]
-    then
-    sed -i 's/'$aa2/$aa3'/g' "$file"
+  echo "正在修改喵..."
+  for file in `ls *$aa1`
+  do
+     if [ $a1 = 1 ]
+     then
+     mv $file ${file%$aa1}$aa2
+     elif [ $a1 = 2 ]
+     then
+     sed -i 's/'$aa2/$aa3'/g' "$file"
     fi
-done
+  done
 else
-echo "你玩我呢喵！这不是什么都没改吗？！"
-exit
+  echo "你玩我呢喵！这不是什么都没改吗？！"
+  exit
 fi
 }
 miao6(){
@@ -142,6 +142,7 @@ echo "输入你想修改的原文件后缀（为空则直接在所有文件后�
 read aa1
 echo "输入你想修改的后缀（为空则删除上一个输入的后缀）"
 read aa2
+miao3
 elif [ $a1 = 2 ]
 then
 echo "输入你想修改的文件名或后缀（为空则为所有文件）"
@@ -150,6 +151,13 @@ echo "输入你想替换的原文本（不能为空）"
 read aa2
 echo "输入你想替换后的文本（为空则为删除）"
 read aa3
+miao3
+elif [ $a1 = 3 ]
+then
+echo "请输入你要的名字前缀(例如:聪明猫)"
+read name1
+echo "请输入你要的名字后缀[注意！！请反着输入！](例如~喵，发出来就是'喵~'！)"
+read name2
 else
 echo "你这选了个什么喵！"
 exit
@@ -162,14 +170,28 @@ miao5
 elif [ $a1 = 2 ]
 then
 miao6
+elif [ $a1 = 3 ]
+then
+miao7
 fi
 }
 miao1(){
 echo "功能列表:"
 echo "1.批量修改文件名"
 echo "2.批量修改文件内文本"
-echo "请选择功能[1-2]"
+echo "3.生成QQ昵称后缀(效果：别人@你后输入的文字会出现在两个文本的中间)"
+echo "请选择功能[1-3]"
 read a1
+}
+miao7(){
+touch 昵称.txt
+echo $name2 > 昵称.txt
+name3=$(awk '{array[NR]=$0} END { for(i=NR;i>0;i--){print array[i];} }' 昵称.txt)
+name4=$name1"⁧"$name3"⁧‭"
+echo $name4 > 昵称.txt
+echo "生成完成！请退出脚本后查看<昵称.txt>！"
+echo "可直接全选复制后设置成自己的QQ昵称！"
+exit
 }
 
 echo "是否离线运行"
@@ -181,7 +203,6 @@ if [ $www = 2 ]
 then
  miao1
  miao2
- miao3
  miao4
 elif [ $www = 1 ]
 then
@@ -189,7 +210,6 @@ then
  miao0
  miao1
  miao2
- miao3
  miao4
 else
  echo "你这选了个什么喵！"
