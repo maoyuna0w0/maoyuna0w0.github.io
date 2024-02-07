@@ -259,11 +259,20 @@ function_3(){
 	fi
 		json=$(curl -s "https://image.anosu.top/pixiv/json" -d "r18="$r18"&keyword="$keyword)
 		url=$(getJsonValuesByAwk "$json" "url")
+		pid=$(getJsonValuesByAwk "$json" "pid")
+		uid=$(getJsonValuesByAwk "$json" "uid")
+		title=$(getJsonValuesByAwk "$json" "title")
+		user=$(getJsonValuesByAwk "$json" "user")
+		tag_1=$(getJsonValuesByAwk "$json" "tags")
+		tag_2=${tag_1//[/}
+		tag=${tag_2//]/}
 		echo "正在下载第"$number"张"
-		curl -s -o setu/$number".jpg" ${url//'"'/}
+		echo "涩图信息:"
+		echo "标题:"${title//'"'/}"\n作者:"${user//'"'/}"\npid:"$pid"\nuid:"$uid"\n标签:"${tag//'"'/}
+		curl -s -o setu/${title//'"'/}".jpg" ${url//'"'/}
 		echo "下载完成喵！"
 	done
-	echo "所有下载的涩图都在'当前文件夹/setu/'里"
+	echo "所有下载的涩图都在[当前文件夹/setu/]里"
 }
 function_end(){
 if [ $function_number = 1 ]
