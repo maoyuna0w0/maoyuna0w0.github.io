@@ -196,46 +196,46 @@ else
 fi
 }
 function_1_1(){
-	if [ $data_1 = ".sh" ]
-	then
+if [ $data_1 = ".sh" ]
+then
 	mv $sh_name1$data_2 $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-	elif [ $data_1 = "sh" ]
-	then
+elif [ $data_1 = "sh" ]
+then
 	mv $sh_name2$data_2 $sh_name2"sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-	elif [ $data_1 = "h" ]
-	then
+elif [ $data_1 = "h" ]
+then
 	mv $sh_name3$data_2 $sh_name3"h"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-	elif [ $data_1 ]
-	then
+elif [ $data_1 ]
+then
 	echo "修改完成喵！"
-	else
+else
 	mv $sh_name1".sh"$data_2 $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-	fi
+fi
 }
 function_1_2(){
-	if [ $data_1 = ".sh" ]
-	then
+if [ $data_1 = ".sh" ]
+then
 	sed -i 's/'$data_3/$data_2'/g' $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-	elif [ $data_1 = "sh" ]
-	then
+elif [ $data_1 = "sh" ]
+then
 	sed -i 's/'$data_3/$data_2'/g' $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-	elif [ $data_1 = "h" ]
-	then
+elif [ $data_1 = "h" ]
+then
 	sed -i 's/'$data_3/$data_2'/g' $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-	elif [ $data_1 ]
-	then
+elif [ $data_1 ]
+then
 	echo "修改完成喵！"
-	else
+else
 	sed -i 's/'$data_3/$data_2'/g' $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-	fi
+fi
 }
 function_2(){
 	touch 昵称.txt
@@ -252,6 +252,11 @@ function_3(){
 	mkdir setu
 	for number in $num_2
 	do
+		network
+	if [ $? -eq 0 ];then
+		echo "下载失败喵！请检查网络后重试喵！"
+		function_list_1
+	fi
 		json=$(curl -s "https://image.anosu.top/pixiv/json" -d "r18="$r18"&keyword="$keyword)
 		url=$(getJsonValuesByAwk "$json" "url")
 		echo "正在下载第"$number"张"
