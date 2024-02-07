@@ -274,7 +274,7 @@ function_3(){
 		echo "正在下载第"$number"张"
 		echo "涩图信息:"
 		echo "标题:"${title//'"'/}"\n作者:"${user//'"'/}"\npid:"$pid"\nuid:"$uid"\n标签:"${tag//'"'/}
-		curl -s -o setu/${title//'"'/}".jpg" ${url//'"'/}
+		curl --progress-bar -o setu/${title//'"'/}".jpg" ${url//'"'/} | tee /dev/null
 		echo "下载完成喵！"
 	done
 	echo "所有下载的涩图都在[当前文件夹/setu/]里"
