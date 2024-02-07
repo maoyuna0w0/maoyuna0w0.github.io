@@ -133,8 +133,9 @@ function_list_1(){
 	echo "2.批量修改文件内文本"
 	echo "3.生成QQ昵称后缀(效果：别人@你后输入的文字会出现在两个文本的中间)"
 	echo "4.批量下载二次元涩图"
-	echo "5.关于脚本"
-	echo "请选择功能[1-5]"
+	echo "5.重新下载脚本"
+	echo "6.退出脚本"
+	echo "请选择功能[1-6]"
 	read function_number
 	function_list_2
 }
@@ -176,6 +177,9 @@ then
 elif [ $function_number = 5 ]
 then
 	function_4
+elif [ $function_number = 6 ]
+then
+	exit
 else
 	echo "你这选了个什么喵！"
 	exit
@@ -293,8 +297,6 @@ function_4(){
 	url3=${url2//'<div>'/}
 	url4=${url3//'</div>'/}
 	echo ${url4//"[换行]"/"\n"}
-	echo "是否需要重新下载脚本？[yes or no]"
-	read redownload
 }
 function_end(){
 if [ $function_number = 1 ]
@@ -303,15 +305,14 @@ then
 elif [ $function_number = 2 ]
 then
 	function_1_2
-fi
-if [ $redownload = "yes" ]
+elif [ $function_number = 5 ]
 then
-	echo "更新日志:"$url6
-	echo "正在重新下载请稍等喵..."
+	echo "正在重新下载...请稍等喵..."
 	curl --progress-bar -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
 	echo "下载完成喵！请重新启动脚本喵！"
 	exit
 fi
+function_list_1
 }
 #-----------------分割线-------------------
 #开始脚本
