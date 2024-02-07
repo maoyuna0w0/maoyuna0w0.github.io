@@ -49,6 +49,10 @@ network()
 }
 notice(){
 	echo "正在获取信息...请稍等喵"
+	target="https://sharechain.qq.com/36e88405300762a1fcdf52f399b818c9"
+	sh_name1=$(basename "$0" .sh)
+	sh_name2=$(basename "$0" sh)
+	sh_name3=$(basename "$0" h)
 	network
 if [ $? -eq 0 ];then
 	echo "获取失败喵！请检查网络后重试喵！"
@@ -249,6 +253,7 @@ function_2(){
 }
 function_3(){
 	num_2=$(seq $num_1)
+	target="https://image.anosu.top/pixiv/json"
 	mkdir setu
 	for number in $num_2
 	do
@@ -285,8 +290,4 @@ fi
 }
 #-----------------分割线-------------------
 #开始脚本
-target="https://sharechain.qq.com/36e88405300762a1fcdf52f399b818c9"
-sh_name1=$(basename "$0" .sh)
-sh_name2=$(basename "$0" sh)
-sh_name3=$(basename "$0" h)
 notice
