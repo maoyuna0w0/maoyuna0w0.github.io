@@ -27,7 +27,7 @@ else
 	echo "最新版本:"$url4
 	echo "更新日志:"$url6
 	echo "正在更新..."
-	curl -s -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh
+	curl --progress-bar -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
 	echo "更新完成喵！请重新启动脚本喵！"
 	exit
 fi
@@ -306,9 +306,9 @@ then
 fi
 if [ $redownload = "yes" ]
 then
-	echo "更新日志:"
-	echo $url6
-	curl -s -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh
+	echo "更新日志:"$url6
+	echo "正在重新下载请稍等喵..."
+	curl --progress-bar -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
 	echo "下载完成喵！请重新启动脚本喵！"
 	exit
 fi
