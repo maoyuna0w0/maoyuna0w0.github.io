@@ -254,6 +254,10 @@ function_2(){
 function_3(){
 	num_2=$(seq $num_1)
 	target="https://image.anosu.top/pixiv/json"
+	if [ $r18 = 1 ]
+	then
+	r18=2
+	fi
 	mkdir setu
 	for number in $num_2
 	do
@@ -274,7 +278,7 @@ function_3(){
 		echo "正在下载第"$number"张"
 		echo "涩图信息:"
 		echo "标题:"${title//'"'/}"\n作者:"${user//'"'/}"\npid:"$pid"\nuid:"$uid"\n标签:"${tag//'"'/}
-		curl --progress-bar -o setu/${title//'"'/}".jpg" ${url//'"'/} | tee /dev/null
+		curl --progress-bar -o setu/$pid".jpg" ${url//'"'/} | tee /dev/null
 		echo "下载完成喵！"
 	done
 	echo "所有下载的涩图都在[当前文件夹/setu/]里"
