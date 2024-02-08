@@ -170,7 +170,7 @@ then
 	echo "是否过滤r18图片"
 	echo "请选择[0(是)|1(否)]"
 	read r18
-	echo "请输入搜索图片的关键词(不需要就直接回车)"
+	echo "请输入搜索图片的关键词(多个请用|分割，不需要就直接回车)"
 	read keyword
 	echo "请稍后喵..."
 	function_3
