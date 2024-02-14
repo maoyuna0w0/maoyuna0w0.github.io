@@ -4,30 +4,30 @@
 #反馈或者提供意见请加作者QQ好友
 #聪明猫<1922920373>
 #版本号
-version=0.5
+version_now=0.5
 #-----------------分割线--------------------
 #下面是加载头
-update(){
-	url=$(curl -s $target)
-	url1=${url/%"[版本尾]"*/}
-	url2=$(echo ${url1/*"[版本头]"/})
+replace(){
+	url0=$(curl -s $target)
+	url1=${url0/%"["$1"尾]"*/}
+	url2=$(echo ${url1/*"["$1"头]"/})
 	url3=${url2//'<div>'/}
 	url4=${url3//'</div>'/}
-	url1=${url/%"[日志尾]"*/}
-	url2=$(echo ${url1/*"[日志头]"/})
-	url3=${url2//'<div>'/}
-	url5=${url3//'</div>'/}
-	url6=${url5//"[换行]"/"\n"}
-if [ $url4 = $version ]
+	url5=${url4//"[换行]"/"\n"}
+	echo $url5
+}
+update(){
+	version_new=$(replace "版本")
+if [ $version_new = $version_now ]
 then
 	echo "当前为最新版本喵！"
 else
 	echo "当前版本与最新版本不一致！"
-	echo "当前版本:"$version
-	echo "最新版本:"$url4
-	echo "更新日志:"$url6
+	echo "当前版本:"$version_now
+	echo "最新版本:"$version_new
+	echo "更新日志:"$(replace "日志")
 	echo "正在更新..."
-	curl --progress-bar -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
+#	curl --progress-bar -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
 	echo "更新完成喵！请重新启动脚本喵！"
 	exit
 fi
@@ -59,19 +59,11 @@ if [ $? -eq 0 ];then
 	function_list_1
 fi
 	update
-	url1=${url/%"[公告尾]"*/}
-	url2=$(echo ${url1/*"[公告头]"/})
-	url3=${url2//'<div>'/}
-	url4=${url3//'</div>'/}
-	echo ${url4//"[换行]"/"\n"}
+	replace "公告"
 	switch
 }
 switch(){
-	url1=${url/%"[开关尾]"*/}
-	url2=$(echo ${url1/*"[开关头]"/})
-	url3=${url2//'<div>'/}
-	url4=${url3//'</div>'/}
-if [ $url4 = "关" ]
+if [ $(replace "开关") = "关" ]
 then
 	echo "本脚本暂时停止运行喵！"
 	exit
@@ -80,7 +72,7 @@ else
 fi
 	function_list_1
 }
-function getJsonValuesByAwk() {
+getJsonValuesByAwk() {
     awk -v json="$1" -v key="$2" -v defaultValue="$3" 'BEGIN{
         foundKeyCount = 0
         while (length(json) > 0) {
@@ -274,8 +266,8 @@ function_3(){
 		echo "下载失败喵！请检查网络后重试喵！"
 		function_list_1
 	fi
-		json=$(curl -s "https://image.anosu.top/pixiv/json" -d "r18="$r18"&keyword="$keyword)
-		url=$(getJsonValuesByAwk "$json" "url")
+		json=$(curl -s $target -d "r18="$r18"&keyword="$keyword)
+		url=$(getJsonValuesByAwk "$json" "url" "https://maoyuna0w0.github.io/Error.jpg")
 		pid=$(getJsonValuesByAwk "$json" "pid")
 		uid=$(getJsonValuesByAwk "$json" "uid")
 		title=$(getJsonValuesByAwk "$json" "title")
@@ -292,11 +284,7 @@ function_3(){
 	echo "所有下载的涩图都在[当前文件夹/setu/]里"
 }
 function_4(){
-	url1=${url/%"[关于尾]"*/}
-	url2=$(echo ${url1/*"[关于头]"/})
-	url3=${url2//'<div>'/}
-	url4=${url3//'</div>'/}
-	echo ${url4//"[换行]"/"\n"}
+	replace "关于"
 }
 function_end(){
 if [ $function_number = 1 ]
@@ -315,6 +303,6 @@ fi
 echo "正在返回选择功能区..."
 function_list_1
 }
-#-----------------分割线-------------------
+#-----------------分割线--------------------
 #开始脚本
 notice
