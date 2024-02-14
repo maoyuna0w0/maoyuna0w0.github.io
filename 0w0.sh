@@ -74,49 +74,49 @@ fi
 	function_list_1
 }
 getJsonValuesByAwk() {
-    awk -v json="$1" -v key="$2" -v defaultValue="$3" 'BEGIN{
-        foundKeyCount = 0
-        while (length(json) > 0) {
-            # pos = index(json, "\""key"\""); ## 这行更快一些，但是如果有value是字符串，且刚好与要查找的key相同，会被误认为是key而导致值获取错误
-            pos = match(json, "\""key"\"[ \\t]*?:[ \\t]*");
-            if (pos == 0) {if (foundKeyCount == 0) {print defaultValue;} exit 0;}
+	awk -v json="$1" -v key="$2" -v defaultValue="$3" 'BEGIN{
+		foundKeyCount = 0
+		while (length(json) > 0) {
+			# pos = index(json, "\""key"\""); ## 这行更快一些，但是如果有value是字符串，且刚好与要查找的key相同，会被误认为是key而导致值获取错误
+			pos = match(json, "\""key"\"[ \\t]*?:[ \\t]*");
+			if (pos == 0) {if (foundKeyCount == 0) {print defaultValue;} exit 0;}
 
-            ++foundKeyCount;
-            start = 0; stop = 0; layer = 0;
-            for (i = pos + length(key) + 1; i <= length(json); ++i) {
-                lastChar = substr(json, i - 1, 1)
-                currChar = substr(json, i, 1)
+			++foundKeyCount;
+			start = 0; stop = 0; layer = 0;
+			for (i = pos + length(key) + 1; i <= length(json); ++i) {
+				lastChar = substr(json, i - 1, 1)
+				currChar = substr(json, i, 1)
 
-                if (start <= 0) {
-                    if (lastChar == ":") {
-                        start = currChar == " " ? i + 1: i;
-                        if (currChar == "{" || currChar == "[") {
-                            layer = 1;
-                        }
-                    }
-                } else {
-                    if (currChar == "{" || currChar == "[") {
-                        ++layer;
-                    }
-                    if (currChar == "}" || currChar == "]") {
-                        --layer;
-                    }
-                    if ((currChar == "," || currChar == "}" || currChar == "]") && layer <= 0) {
-                        stop = currChar == "," ? i : i + 1 + layer;
-                        break;
-                    }
-                }
-            }
+				if (start <= 0) {
+					if (lastChar == ":") {
+						start = currChar == " " ? i + 1: i;
+						if (currChar == "{" || currChar == "[") {
+							layer = 1;
+						}
+					}
+				} else {
+					if (currChar == "{" || currChar == "[") {
+						++layer;
+					}
+					if (currChar == "}" || currChar == "]") {
+						--layer;
+					}
+					if ((currChar == "," || currChar == "}" || currChar == "]") && layer <= 0) {
+						stop = currChar == "," ? i : i + 1 + layer;
+						break;
+					}
+				}
+			}
 
-            if (start <= 0 || stop <= 0 || start > length(json) || stop > length(json) || start >= stop) {
-                if (foundKeyCount == 0) {print defaultValue;} exit 0;
-            } else {
-                print substr(json, start, stop - start);
-            }
+			if (start <= 0 || stop <= 0 || start > length(json) || stop > length(json) || start >= stop) {
+				if (foundKeyCount == 0) {print defaultValue;} exit 0;
+			} else {
+				print substr(json, start, stop - start);
+			}
 
-            json = substr(json, stop + 1, length(json) - stop)
-        }
-    }'
+			json = substr(json, stop + 1, length(json) - stop)
+		}
+	}'
 }
 #--------------分割线-----------------
 #下面是功能列表
@@ -127,21 +127,25 @@ function_list_1(){
 	echo "3.生成QQ昵称后缀(效果：别人@你后输入的文字会出现在两个文本的中间)"
 	echo "4.批量下载二次元涩图"
 	echo "5.重新下载脚本"
-	echo "6.退出脚本"
-	echo "请选择功能[1-6]"
+	echo "请选择功能[1-5]"
 	read function_number
 	function_list_2
 }
 function_list_2(){
-if [ $function_number = 1 ]
+if [ $function_number ]
 then
+	if [ $function_number = 0 ]
+	then
+	exit
+	elif [ $function_number = 1 ]
+	then
 	echo "输入你想修改的原文件后缀（为空则直接在所有文件后面添加后缀）"
 	read data_1
 	echo "输入你想修改的后缀（为空则删除上一个输入的后缀）"
 	read data_2
 	function_1
-elif [ $function_number = 2 ]
-then
+	elif [ $function_number = 2 ]
+	then
 	echo "输入你想修改的文件名或后缀（为空则为所有文件）"
 	read data_1
 	echo "输入你想替换的原文本（不能为空）"
@@ -149,15 +153,15 @@ then
 	echo "输入你想替换后的文本（为空则为删除）"
 	read data_3
 	function_1
-elif [ $function_number = 3 ]
-then
+	elif [ $function_number = 3 ]
+	then
 	echo "请输入你要的名字前缀(例如:聪明猫)"
 	read name1
 	echo "请输入你要的名字后缀[注意！！请反着输入！](例如~喵，发出来就是'喵~'！)"
 	read name2
-	function_2
-elif [ $function_number = 4 ]
-then
+	function_3
+	elif [ $function_number = 4 ]
+	then
 	echo "请输入要下载的图片张数"
 	read num_1
 	echo "是否过滤r18图片"
@@ -165,19 +169,26 @@ then
 	read r18
 	echo "请输入搜索图片的关键词(多个请用|分割，不需要就直接回车)"
 	read keyword
+		if [ ! "$(ls -A setu)" ]
+		then
+		echo "是否需要隐藏涩图文件夹？"
+		echo "反悔了请删除setu文件夹或者重命名setu文件夹！"
+		echo "1:是"
+		echo "2:否"
+		echo "请选择[1-2]"
+		read setu_set
+		fi
 	echo "请稍后喵..."
-	function_3
-elif [ $function_number = 5 ]
-then
 	function_4
-elif [ $function_number = 6 ]
-then
-	exit
-else
+	elif [ $function_number = 5 ]
+	then
+	function_5
+	else
 	echo "你这选了个什么喵！"
 	exit
-fi
+	fi
 	function_end
+fi
 }
 #---------------分割线-------------------
 #下面是具体功能
@@ -242,7 +253,7 @@ else
 	echo "检测到可能修改了sh文件，已恢复喵！"
 fi
 }
-function_2(){
+function_3(){
 	touch 昵称.txt
 	echo $name2 > 昵称.txt
 	name3=$(awk '{array[NR]=$0} END { for(i=NR;i>0;i--){print array[i];} }' 昵称.txt)
@@ -252,7 +263,7 @@ function_2(){
 	echo "可直接全选复制后设置成自己的QQ昵称！"
 	exit
 }
-function_3(){
+function_4(){
 	num_2=$(seq $num_1)
 	target="https://image.anosu.top/pixiv/json"
 	if [ $r18 = 1 ]
@@ -284,7 +295,7 @@ function_3(){
 	done
 	echo "所有下载的涩图都在[当前文件夹/setu/]里"
 }
-function_4(){
+function_5(){
 	replace "关于"
 }
 function_end(){
@@ -294,6 +305,16 @@ then
 elif [ $function_number = 2 ]
 then
 	function_1_2
+elif [ $function_number = 4 ]
+then
+	if [ $setu_set ]
+	then
+		if [ $setu_set = 1 ]
+		then
+		touch setu/.nomedia
+		echo "可能需要重启手机后相册才不会检测到涩图"
+		fi
+	fi
 elif [ $function_number = 5 ]
 then
 	echo "正在重新下载...请稍等喵..."
