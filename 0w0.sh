@@ -122,12 +122,13 @@ getJsonValuesByAwk() {
 #下面是功能列表
 function_list_1(){
 	echo "功能列表:"
+	echo "0.重新下载脚本"
 	echo "1.批量修改文件名"
 	echo "2.批量修改文件内文本"
 	echo "3.生成QQ昵称后缀(效果：别人@你后输入的文字会出现在两个文本的中间)"
 	echo "4.批量下载二次元涩图"
-	echo "5.重新下载脚本"
-	echo "请选择功能[1-5]"
+	echo "5.批量删除文件"
+	echo "请选择功能[0-5]"
 	read function_number
 	function_list_2
 }
@@ -136,7 +137,7 @@ if [ $function_number ]
 then
 	if [ $function_number = 0 ]
 	then
-	exit
+	replace "关于"
 	elif [ $function_number = 1 ]
 	then
 	echo "输入你想修改的原文件后缀（为空则直接在所有文件后面添加后缀）"
@@ -182,6 +183,8 @@ then
 	function_4
 	elif [ $function_number = 5 ]
 	then
+	echo "请输入你想批量删除文件的后缀(为空则所有文件)"
+	read delete_name
 	function_5
 	else
 	echo "你这选了个什么喵！"
@@ -196,7 +199,7 @@ function_1(){
 if [ $data_1 ] || [ $data_2 ] || [ $data_3 ]
 then
 	echo "正在修改喵..."
-	for file in `ls *$data_1`
+	for file in `ls -1 -F *$data_1 | grep -v [/$]`
 	do
 		if [ $function_number = 1 ]
 		then
@@ -212,42 +215,46 @@ else
 fi
 }
 function_1_1(){
-if [ $data_1 = ".sh" ]
+if [ $data_1 ]
 then
+	if [ $data_1 = ".sh" ]
+	then
 	mv $sh_name1$data_2 $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-elif [ $data_1 = "sh" ]
-then
+	elif [ $data_1 = "sh" ]
+	then
 	mv $sh_name2$data_2 $sh_name2"sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-elif [ $data_1 = "h" ]
-then
+	elif [ $data_1 = "h" ]
+	then
 	mv $sh_name3$data_2 $sh_name3"h"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-elif [ $data_1 ]
-then
+	else
 	echo "修改完成喵！"
+	fi
 else
 	mv $sh_name1".sh"$data_2 $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
 fi
 }
 function_1_2(){
-if [ $data_1 = ".sh" ]
+if [ $data_1 ]
 then
+	if [ $data_1 = ".sh" ]
+	then
 	sed -i 's/'$data_3/$data_2'/g' $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-elif [ $data_1 = "sh" ]
-then
+	elif [ $data_1 = "sh" ]
+	then
 	sed -i 's/'$data_3/$data_2'/g' $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-elif [ $data_1 = "h" ]
-then
+	elif [ $data_1 = "h" ]
+	then
 	sed -i 's/'$data_3/$data_2'/g' $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
-elif [ $data_1 ]
-then
+	else
 	echo "修改完成喵！"
+	fi
 else
 	sed -i 's/'$data_3/$data_2'/g' $sh_name1".sh"
 	echo "检测到可能修改了sh文件，已恢复喵！"
@@ -296,10 +303,42 @@ function_4(){
 	echo "所有下载的涩图都在[当前文件夹/setu/]里"
 }
 function_5(){
-	replace "关于"
+	for delete_file in $(ls -1 -F *$delete_name | grep -v [/$])
+	do
+	rm -f $delete_file
+	done
+}
+function_5_1(){
+if [ $delete_name ]
+then
+	if [ $delete_name = ".sh" ]
+	then
+	curl -s -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
+	echo "检测到可能删除了sh文件，已恢复喵！"
+	elif [ $delete_name = "sh" ]
+	then
+	curl -s -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
+	echo "检测到可能删除了sh文件，已恢复喵！"
+	elif [ $delete_name = "h" ]
+	then
+	curl -s -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
+	echo "检测到可能删除了sh文件，已恢复喵！"
+	else
+	echo "删除完成喵！"
+	fi
+else
+	curl -s -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
+	echo "检测到可能删除了sh文件，已恢复喵！"
+fi
 }
 function_end(){
-if [ $function_number = 1 ]
+if [ $function_number = 0 ]
+then
+	echo "正在重新下载...请稍等喵..."
+	curl --progress-bar -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
+	echo "下载完成喵！请重新启动脚本喵！"
+	exit
+elif [ $function_number = 1 ]
 then
 	function_1_1
 elif [ $function_number = 2 ]
@@ -317,10 +356,7 @@ then
 	fi
 elif [ $function_number = 5 ]
 then
-	echo "正在重新下载...请稍等喵..."
-	curl --progress-bar -o $sh_name1".sh" https://maoyuna0w0.github.io/0w0.sh | tee /dev/null
-	echo "下载完成喵！请重新启动脚本喵！"
-	exit
+	function_5_1
 fi
 echo "正在返回选择功能区..."
 function_list_1
