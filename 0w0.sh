@@ -347,8 +347,8 @@ then
 	function_1_2
 elif [ $function_number = 4 ]
 then
-	mkdir setu
 	if [ $setu_set ]
+	mkdir setu
 	then
 		if [ $setu_set = 1 ]
 		then
