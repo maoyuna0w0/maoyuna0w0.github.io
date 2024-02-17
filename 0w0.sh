@@ -4,17 +4,19 @@
 #反馈或者提供意见请加作者QQ好友
 #聪明猫<1922920373>
 #版本号
-version_now=0.6
+version_now=0.7
 #-----------------分割线--------------------
 #下面是加载头
 replace(){
 	url0=$(curl -s $target)
 	url1=${url0/%"["$1"尾]"*/}
 	url2=$(echo ${url1/*"["$1"头]"/})
-	url3=${url2//'<div>'/}
-	url4=${url3//'</div>'/}
-	url5=${url4//"[换行]"/"\n"}
-	echo $url5
+	url3=${url2//"<div>"/}
+	url4=${url3//"</div>"/}
+	url5=${url4//"\u003Cdiv>"/}
+	url6=${url5//"\u003C/div>"/}
+	url7=${url6//"[换行]"/'\n'}
+	printf $url7
 }
 update(){
 	version_new=$(replace "版本")
@@ -296,7 +298,7 @@ function_4(){
 		tag=${tag_2//]/}
 		echo "正在下载第"$number"张"
 		echo "涩图信息:"
-		echo "标题:"${title//'"'/}"\n作者:"${user//'"'/}"\npid:"$pid"\nuid:"$uid"\n标签:"${tag//'"'/}
+		printf "标题:"${title//'"'/}"\n作者:"${user//'"'/}"\npid:"$pid"\nuid:"$uid"\n标签:"${tag//'"'/}"\n"
 		curl --progress-bar -o setu/$pid".jpg" ${url//'"'/} | tee /dev/null
 		echo "下载完成喵！"
 	done
