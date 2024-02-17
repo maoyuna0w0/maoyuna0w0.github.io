@@ -279,7 +279,6 @@ function_4(){
 	then
 	r18=2
 	fi
-	mkdir setu
 	for number in $num_2
 	do
 		network
@@ -348,6 +347,7 @@ then
 	function_1_2
 elif [ $function_number = 4 ]
 then
+	mkdir setu
 	if [ $setu_set ]
 	then
 		if [ $setu_set = 1 ]
