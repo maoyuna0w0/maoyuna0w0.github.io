@@ -174,6 +174,7 @@ then
 	read keyword
 		if [ ! "$(ls -A setu)" ]
 		then
+		mkdir setu
 		echo "是否需要隐藏涩图文件夹？"
 		echo "反悔了请删除setu文件夹或者重命名setu文件夹！"
 		echo "1:是"
@@ -348,7 +349,6 @@ then
 elif [ $function_number = 4 ]
 then
 	if [ $setu_set ]
-	mkdir setu
 	then
 		if [ $setu_set = 1 ]
 		then
