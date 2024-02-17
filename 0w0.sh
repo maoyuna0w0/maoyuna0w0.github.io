@@ -50,7 +50,7 @@ network()
 }
 notice(){
 	echo "正在获取信息...请稍等喵"
-	target="https://sharechain.qq.com/36e88405300762a1fcdf52f399b818c9"
+	target=$(echo "aHR0cHM6Ly9zaGFyZWNoYWluLnFxLmNvbS8zNmU4ODQwNTMwMDc2MmExZmNkZjUyZjM5OWI4MThjOQo=" | base64 -d)
 	sh_name1=$(basename "$0" .sh)
 	sh_name2=$(basename "$0" sh)
 	sh_name3=$(basename "$0" h)
